@@ -2,14 +2,13 @@
 
 A cross-platform nutrition tracking app powered by Google's Gemini AI. Available for **Android** and **iOS**.
 
-[![Android Build](https://github.com/demo-99/food-tracking/actions/workflows/android.yml/badge.svg)](https://github.com/demo-99/food-tracking/actions/workflows/android.yml)
-[![iOS Build](https://github.com/demo-99/food-tracking/actions/workflows/ios.yml/badge.svg)](https://github.com/demo-99/food-tracking/actions/workflows/ios.yml)
+[![CI](https://github.com/demo-99/food-tracking/actions/workflows/ci.yml/badge.svg)](https://github.com/demo-99/food-tracking/actions/workflows/ci.yml)
 
 ## Features 🚀
 
 - **AI Food Analysis**: Snap a photo or describe your meal, and Gemini AI estimates calories, macros, and weight 📸
 - **Health Integration**: Syncs with Health Connect (Android) and HealthKit (iOS) 🏥
-- **Smart Search**: Search a database of 60+ common foods 🔍
+- **Smart Search**: Search a database of 1000+ common foods 🔍
 - **Favorites**: Save frequent meals for quick access ⭐
 - **Personalized Goals**: Set custom daily calorie and macro targets 🎯
 - **Onboarding Flow**: Guided setup with nutrition profile selection
