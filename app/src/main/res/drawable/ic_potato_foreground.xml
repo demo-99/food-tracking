@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- 
+      Scaling to 0.58 (58%) to provide ample white space around the icon 
+      Rotation -15 degrees to tilt it slightly up/left
+    -->
+    <group
+        android:scaleX="0.58"
+        android:scaleY="0.58"
+        android:rotation="-15"
+        android:pivotX="54"
+        android:pivotY="54">
+        
+        <!-- Potato Body -->
+        <path
+            android:fillColor="#CD9B3C"
+            android:strokeColor="#8B5A2B"
+            android:strokeWidth="3"
+            android:pathData="M30,45 
+                              C30,45 35,25 65,20 
+                              C95,15 100,40 100,55 
+                              C100,75 85,95 55,95 
+                              C25,95 15,75 15,60 
+                              C15,45 30,45 30,45 Z" />
+        
+        <!-- Texture: Dark scratches -->
+        <path
+            android:fillColor="#8B5A2B"
+            android:pathData="M65,28 Q75,32 80,38 L78,40 Q73,34 65,30 Z" />
+        <path
+            android:fillColor="#8B5A2B"
+            android:pathData="M70,42 Q75,45 78,48 L76,50 Q73,47 68,44 Z" />
+
+        <!-- Texture: Spots -->
+        <path
+            android:fillColor="#8B5A2B"
+            android:pathData="M25,65 a2,2 0 1,1 4,0 a2,2 0 1,1 -4,0" />
+        <path
+            android:fillColor="#8B5A2B"
+            android:pathData="M32,75 a1.5,1.5 0 1,1 3,0 a1.5,1.5 0 1,1 -3,0" />
+        <path
+            android:fillColor="#8B5A2B"
+            android:pathData="M22,72 a1,1 0 1,1 2,0 a1,1 0 1,1 -2,0" />
+        
+        <!-- Highlight -->
+        <path
+            android:fillColor="#E6C275"
+            android:fillAlpha="0.3"
+            android:pathData="M40,40 Q60,35 70,50 Q60,60 40,55 Q35,45 40,40 Z" />
+
+        <!-- Face -->
+        <!-- Eyes -->
+        <path
+            android:fillColor="#3E2723"
+            android:pathData="M48,55 m-2.5,0 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0" />
+        <path
+            android:fillColor="#3E2723"
+            android:pathData="M68,55 m-2.5,0 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0" />
+            
+        <!-- Smile -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#3E2723"
+            android:strokeWidth="2.5"
+            android:strokeLineCap="round"
+            android:pathData="M50,65 Q58,72 66,65" />
+            
+        <!-- Cheeks -->
+        <path
+            android:fillColor="#D84315"
+            android:fillAlpha="0.4"
+            android:pathData="M44,62 a3,2 0 1,1 6,0 a3,2 0 1,1 -6,0" />
+        <path
+            android:fillColor="#D84315"
+            android:fillAlpha="0.4"
+            android:pathData="M66,62 a3,2 0 1,1 6,0 a3,2 0 1,1 -6,0" />
+
+    </group>
+</vector>

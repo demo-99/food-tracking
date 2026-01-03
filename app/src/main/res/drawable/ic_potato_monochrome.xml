@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    
+    <group
+        android:scaleX="0.58"
+        android:scaleY="0.58"
+        android:rotation="-15"
+        android:pivotX="54"
+        android:pivotY="54">
+        
+        <!-- Potato Body Outline -->
+        <path
+            android:fillColor="#00000000"
+            android:strokeColor="#FF000000"
+            android:strokeWidth="6"
+            android:strokeLineJoin="round"
+            android:pathData="M30,45 
+                              C30,45 35,25 65,20 
+                              C95,15 100,40 100,55 
+                              C100,75 85,95 55,95 
+                              C25,95 15,75 15,60 
+                              C15,45 30,45 30,45 Z" />
+                              
+        <!-- Face Features (Solid) -->
+        <!-- Left Eye -->
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M48,55 m-2.5,0 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0" />
+        <!-- Right Eye -->
+        <path
+            android:fillColor="#FF000000"
+            android:pathData="M68,55 m-2.5,0 a2.5,2.5 0 1,1 5,0 a2.5,2.5 0 1,1 -5,0" />
+            
+        <!-- Smile -->
+        <path
+             android:fillColor="#00000000"
+             android:strokeColor="#FF000000"
+             android:strokeWidth="5"
+             android:strokeLineCap="round"
+             android:pathData="M50,65 Q58,72 66,65" />
+
+        <!-- Texture (Solid/Stroke) -->
+         <path
+             android:fillColor="#00000000"
+             android:strokeColor="#FF000000"
+             android:strokeWidth="4"
+             android:strokeLineCap="round"
+             android:pathData="M70,30 Q75,34 78,38" />
+             
+    </group>
+</vector>
