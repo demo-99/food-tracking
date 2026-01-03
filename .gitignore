@@ -8,3 +8,11 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# USDA data files (download via script)
+scripts/data/sr_legacy.zip
+scripts/data/sr_legacy/
+scripts/data/foundation.zip
+scripts/data/foundation/
+scripts/data/fndds.zip
+scripts/data/fndds/
