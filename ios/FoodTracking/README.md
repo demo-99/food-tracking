@@ -77,3 +77,21 @@ This iOS app mirrors the functionality of the Android app in the parent director
 - Same nutrition database
 - Same AI integration (Gemini)
 - Same health platform integration (HealthKit vs Health Connect)
+
+## CI/CD
+
+GitHub Actions are configured for both platforms:
+
+- **Android**: Builds on `ubuntu-latest`, produces `app-debug.apk`
+- **iOS**: Runs on `macos-14` with Xcode 15, validates Swift syntax
+
+The iOS source code is packaged as an artifact that can be downloaded and opened in Xcode on a Mac for a full build.
+
+### Why No iOS Binary?
+
+Apple requires:
+1. **Xcode on macOS** - Cannot build on Linux
+2. **Signing Certificate** - For device/App Store deployment
+3. **Provisioning Profile** - Tied to your Apple Developer account
+
+The GitHub Actions workflow validates the Swift code and packages it for you to complete the build on your Mac.
