@@ -1,5 +1,6 @@
 package com.example.foodtracking.ui.history
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,6 +17,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun HistoryScreen(
     viewModel: HistoryViewModel,
+    onDayClick: (java.time.LocalDate) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val history by viewModel.historyByDate.collectAsState()
@@ -67,16 +69,21 @@ fun HistoryScreen(
             }
         } else {
             items(history) { day ->
-                DayHistoryCard(day)
+                DayHistoryCard(
+                    day = day,
+                    onClick = { onDayClick(day.date) }
+                )
             }
         }
     }
 }
 
 @Composable
-private fun DayHistoryCard(day: DayHistory) {
+private fun DayHistoryCard(day: DayHistory, onClick: () -> Unit = {}) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer

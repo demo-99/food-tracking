@@ -50,7 +50,8 @@ data class AddFoodUiState(
 class AddFoodViewModel(
     private val repository: FoodRepository,
     private val settingsManager: SettingsManager,
-    private val healthConnectManager: com.example.foodtracking.health.HealthConnectManager?
+    private val healthConnectManager: com.example.foodtracking.health.HealthConnectManager?,
+    private val targetDate: LocalDate = LocalDate.now()
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AddFoodUiState())
@@ -58,6 +59,26 @@ class AddFoodViewModel(
 
     val hasApiKey: Boolean
         get() = settingsManager.hasGeminiApiKey()
+    
+    // Expose the target date for UI to display appropriate text
+    val savingToDate: LocalDate
+        get() = targetDate
+    
+    val isToday: Boolean
+        get() = targetDate == LocalDate.now()
+        
+    /**
+     * Get the timestamp for the food entry.
+     * For today, use current time. For past dates, use 23:59:59 of that day.
+     */
+    private fun getEntryTimestamp(): java.time.LocalDateTime {
+        val today = LocalDate.now()
+        return if (targetDate == today) {
+            java.time.LocalDateTime.now()
+        } else {
+            targetDate.atTime(23, 59, 59)
+        }
+    }
 
     init {
         viewModelScope.launch {
@@ -221,7 +242,8 @@ class AddFoodViewModel(
                 carbs = result.carbs,
                 emoji = result.emoji,
                 weightGrams = result.weightGrams,
-                date = LocalDate.now(),
+                date = targetDate,
+                timestamp = getEntryTimestamp(),
                 imageUri = imageUri,
                 source = if (_uiState.value.capturedPhoto != null) FoodSource.PHOTO else FoodSource.DESCRIPTION
             )
@@ -240,7 +262,7 @@ class AddFoodViewModel(
 
     fun saveFromSearch(food: CommonFood) {
         viewModelScope.launch {
-            var entry = food.toFoodEntry(LocalDate.now())
+            var entry = food.toFoodEntry(targetDate, getEntryTimestamp())
             val id = repository.insert(entry)
             entry = entry.copy(id = id)
             
@@ -256,7 +278,7 @@ class AddFoodViewModel(
     
     fun saveFromFavorites(favorite: FavoriteFood) {
         viewModelScope.launch {
-            var entry = favorite.toFoodEntry(LocalDate.now())
+            var entry = favorite.toFoodEntry(targetDate, getEntryTimestamp())
             val id = repository.insert(entry)
             entry = entry.copy(id = id)
             
@@ -297,7 +319,8 @@ class AddFoodViewModel(
                 proteins = state.manualProteins.toFloatOrNull() ?: 0f,
                 carbs = state.manualCarbs.toFloatOrNull() ?: 0f,
                 weightGrams = state.manualWeight.toIntOrNull() ?: 100,
-                date = LocalDate.now(),
+                date = targetDate,
+                timestamp = getEntryTimestamp(),
                 source = FoodSource.MANUAL
             )
             val id = repository.insert(entry)
@@ -324,11 +347,12 @@ class AddFoodViewModel(
     class Factory(
         private val repository: FoodRepository,
         private val settingsManager: SettingsManager,
-        private val healthConnectManager: com.example.foodtracking.health.HealthConnectManager?
+        private val healthConnectManager: com.example.foodtracking.health.HealthConnectManager?,
+        private val targetDate: LocalDate = LocalDate.now()
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AddFoodViewModel(repository, settingsManager, healthConnectManager) as T
+            return AddFoodViewModel(repository, settingsManager, healthConnectManager, targetDate) as T
         }
     }
 }

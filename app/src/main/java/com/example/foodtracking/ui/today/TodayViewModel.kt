@@ -17,11 +17,16 @@ import java.time.LocalDate
 class TodayViewModel(
     private val repository: FoodRepository,
     private val settingsManager: SettingsManager,
-    private val healthConnectManager: HealthConnectManager
+    private val healthConnectManager: HealthConnectManager,
+    initialDate: LocalDate = LocalDate.now()
 ) : ViewModel() {
 
-    private val _selectedDate = MutableStateFlow(LocalDate.now())
+    private val _selectedDate = MutableStateFlow(initialDate)
     val selectedDate: StateFlow<LocalDate> = _selectedDate.asStateFlow()
+    
+    // Check if the selected date is today
+    val isToday: Boolean
+        get() = _selectedDate.value == LocalDate.now()
 
     val dailyLimits: StateFlow<DailyLimits> = settingsManager.dailyLimits
 
@@ -76,11 +81,12 @@ class TodayViewModel(
     class Factory(
         private val repository: FoodRepository,
         private val settingsManager: SettingsManager,
-        private val healthConnectManager: HealthConnectManager
+        private val healthConnectManager: HealthConnectManager,
+        private val initialDate: LocalDate = LocalDate.now()
     ) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return TodayViewModel(repository, settingsManager, healthConnectManager) as T
+            return TodayViewModel(repository, settingsManager, healthConnectManager, initialDate) as T
         }
     }
 }

@@ -60,8 +60,19 @@ fun AddFoodScreen(
 
     Scaffold(
         topBar = {
+            val title = if (viewModel.isToday) {
+                "Add Food"
+            } else {
+                val date = viewModel.savingToDate
+                val today = java.time.LocalDate.now()
+                val yesterday = today.minusDays(1)
+                when (date) {
+                    yesterday -> "Add Food (Yesterday)"
+                    else -> "Add Food (${date.format(java.time.format.DateTimeFormatter.ofPattern("d MMM"))})"
+                }
+            }
             TopAppBar(
-                title = { Text("Add Food") },
+                title = { Text(title) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, "Back")
@@ -349,12 +360,14 @@ private fun PhotoTab(
 
         uiState.getEffectiveResult()?.let { result ->
             val originalWeight = uiState.analysisResult?.weightGrams ?: result.weightGrams
+            val saveButtonText = if (viewModel.isToday) "Save to Today" else "Save Entry"
             item {
                 AnalysisResultCard(
                     result = result,
                     originalWeight = originalWeight,
                     onWeightChanged = { viewModel.updateWeight(it) },
-                    onSave = { viewModel.saveFromAnalysis() }
+                    onSave = { viewModel.saveFromAnalysis() },
+                    saveButtonText = saveButtonText
                 )
             }
         }
@@ -403,12 +416,14 @@ private fun DescriptionTab(
 
         uiState.getEffectiveResult()?.let { result ->
             val originalWeight = uiState.analysisResult?.weightGrams ?: result.weightGrams
+            val saveButtonText = if (viewModel.isToday) "Save to Today" else "Save Entry"
             item {
                 AnalysisResultCard(
                     result = result,
                     originalWeight = originalWeight,
                     onWeightChanged = { viewModel.updateWeight(it) },
-                    onSave = { viewModel.saveFromAnalysis() }
+                    onSave = { viewModel.saveFromAnalysis() },
+                    saveButtonText = saveButtonText
                 )
             }
         }
@@ -687,7 +702,8 @@ private fun AnalysisResultCard(
     result: FoodAnalysisResult,
     originalWeight: Int,
     onWeightChanged: (Int) -> Unit,
-    onSave: () -> Unit
+    onSave: () -> Unit,
+    saveButtonText: String = "Save to Today"
 ) {
     var weightText by remember(result.weightGrams) { mutableStateOf(result.weightGrams.toString()) }
     
@@ -792,7 +808,7 @@ private fun AnalysisResultCard(
             Button(onClick = onSave, modifier = Modifier.fillMaxWidth()) {
                 Icon(Icons.Default.Check, null)
                 Spacer(modifier = Modifier.width(8.dp))
-                Text("Save to Today")
+                Text(saveButtonText)
             }
         }
     }

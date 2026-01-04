@@ -14,7 +14,12 @@ sealed class Screen(
     data object Today : Screen("today", "Today", Icons.Default.Today)
     data object History : Screen("history", "History", Icons.Default.CalendarMonth)
     data object Settings : Screen("settings", "Settings", Icons.Default.Settings)
-    data object AddFood : Screen("add_food", "Add Food")
+    data object AddFood : Screen("add_food/{date}", "Add Food") {
+        fun createRoute(date: String = "today") = "add_food/$date"
+    }
+    data object DayView : Screen("day_view/{date}", "Day View") {
+        fun createRoute(date: String) = "day_view/$date"
+    }
 }
 
 val bottomNavItems = listOf(

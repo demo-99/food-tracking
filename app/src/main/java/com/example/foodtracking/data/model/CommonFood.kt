@@ -16,7 +16,7 @@ data class CommonFood(
     val servingSize: String = "1 serving",
     val weightGrams: Int = 100
 ) {
-    fun toFoodEntry(date: java.time.LocalDate): FoodEntry {
+    fun toFoodEntry(date: java.time.LocalDate, timestamp: java.time.LocalDateTime = java.time.LocalDateTime.now()): FoodEntry {
         return FoodEntry(
             name = name,
             calories = calories,
@@ -26,6 +26,7 @@ data class CommonFood(
             emoji = emoji,
             weightGrams = weightGrams,
             date = date,
+            timestamp = timestamp,
             source = FoodSource.DATABASE
         )
     }

@@ -69,8 +69,15 @@ fun TodayScreen(
         ) {
             // Date header
             item {
+                val today = java.time.LocalDate.now()
+                val yesterday = today.minusDays(1)
+                val displayText = when (selectedDate) {
+                    today -> "Today"
+                    yesterday -> "Yesterday"
+                    else -> selectedDate.format(DateTimeFormatter.ofPattern("d MMMM"))
+                }
                 Text(
-                    text = selectedDate.format(DateTimeFormatter.ofPattern("EEEE, MMMM d")),
+                    text = displayText,
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -147,13 +154,20 @@ fun TodayScreen(
 
             // Food entries section
             item {
+                val today = java.time.LocalDate.now()
+                val yesterday = today.minusDays(1)
+                val sectionTitle = when (selectedDate) {
+                    today -> "Today's Food"
+                    yesterday -> "Yesterday's Food"
+                    else -> "Food Entries"
+                }
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
-                        text = "Today's Food",
+                        text = sectionTitle,
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.SemiBold
                     )
