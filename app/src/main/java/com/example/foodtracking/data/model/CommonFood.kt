@@ -3282,7 +3282,61 @@ object CommonFoodsDatabase {
     
     fun search(query: String): List<CommonFood> {
         if (query.isBlank()) return emptyList()
-        return foods.filter { it.name.contains(query, ignoreCase = true) }
-            .sortedBy { it.name }
+        
+        val queryLower = query.trim().lowercase()
+        val queryWords = queryLower.split(Regex("\\s+")).filter { it.isNotEmpty() }
+        
+        // Score each food item based on match quality
+        data class ScoredFood(val food: CommonFood, val score: Int)
+        
+        val scoredResults = foods.mapNotNull { food ->
+            val nameLower = food.name.lowercase()
+            val nameWords = nameLower.split(Regex("[\\s(),]+")).filter { it.isNotEmpty() }
+            
+            // Check if all query words are found in the food name
+            val allWordsMatch = queryWords.all { queryWord ->
+                nameWords.any { it.contains(queryWord) } || nameLower.contains(queryWord)
+            }
+            
+            if (!allWordsMatch) return@mapNotNull null
+            
+            // Calculate score (higher = better match)
+            var score = 0
+            
+            // Highest priority: exact match
+            if (nameLower == queryLower) {
+                score += 1000
+            }
+            // High priority: name starts with query
+            else if (nameLower.startsWith(queryLower)) {
+                score += 500
+            }
+            // Medium-high priority: a word in the name starts with the full query
+            else if (nameWords.any { it.startsWith(queryLower) }) {
+                score += 400
+            }
+            // Medium priority: each query word is at the start of a name word
+            else if (queryWords.all { qw -> nameWords.any { nw -> nw.startsWith(qw) } }) {
+                score += 300
+            }
+            // Lower priority: words match but not at start
+            else {
+                score += 100
+            }
+            
+            // Bonus for shorter names (more specific matches)
+            score += maxOf(0, 50 - food.name.length)
+            
+            // Bonus for matching more query words at word boundaries
+            val boundaryMatches = queryWords.count { qw -> nameWords.any { it.startsWith(qw) } }
+            score += boundaryMatches * 20
+            
+            ScoredFood(food, score)
+        }
+        
+        return scoredResults
+            .sortedWith(compareByDescending<ScoredFood> { it.score }.thenBy { it.food.name })
+            .take(50) // Limit results for performance
+            .map { it.food }
     }
 }
